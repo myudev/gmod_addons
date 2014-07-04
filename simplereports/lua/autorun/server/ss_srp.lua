@@ -70,7 +70,7 @@ function srp_ReceivePlayeReport ( len, ply )
 		local reason = net.ReadString ( )
 
 		if reportedply:IsValid ( ) and ply:IsValid ( ) then
-			reports [ #reports +1 ] = {ply, reportedply, reason, #reports+1}
+			reports [ #reports +1 ] = {reportedply, ply, reason, #reports+1}
 			srp_SendNewReport ( reports [ #reports ] )
 		end
 	else
