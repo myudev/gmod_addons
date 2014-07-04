@@ -24,8 +24,6 @@ function OpenAdminGUI ( len )
 
 	local reports = net.ReadTable ( ) 
 
-	PrintTable ( reports )
-
 	local iAdminBaseWidth = 600
 	local iAdminBaseHeight = 300
 
