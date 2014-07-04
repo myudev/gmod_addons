@@ -181,7 +181,12 @@ function GUIAddCustomFields ( reporttype )
 		srp_report_gui.fields.panel_player:Remove ( ) 
 		srp_report_gui.fields.panel_player = nil		
 	end
-
+	
+	if srp_report_gui.fields.panel_misc then
+		srp_report_gui.fields.panel_misc:Remove ( ) 
+		srp_report_gui.fields.panel_misc = nil		
+	end
+	
 	local function DoPlayerReportThings()
 		local selected_player = nil
 		local pls = player.GetAll()
