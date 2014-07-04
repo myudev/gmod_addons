@@ -1,0 +1,8 @@
+"AddonInfo"
+{
+	"name"				"Simple Reports"
+	"version"			"Overrated"
+	"author_name"			"Fannney' aka. MyU"
+	"info"				""
+	"override"			"0"
+}
