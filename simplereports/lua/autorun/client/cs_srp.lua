@@ -9,11 +9,14 @@
 
 local srp_report_gui = nil
 local srp_admin_gui = nil
+local last_report_time = 0
 surface.CreateFont( "label_font", { size = 16, weight = 600, font = "Tahoma"} )
 
 local iBaseWidth = 350
 local iBaseHeight = 300
 local iSelectsHeight = 25
+
+
 
 function OpenAdminGUI ( len ) 
  
@@ -53,7 +56,7 @@ function OpenAdminGUI ( len )
 		local menu = DermaMenu()
 
 		menu:SetPos(line:GetPos())
-		menu:AddOption('Popout', 
+		menu:AddOption("Popout", 
 			function() 
 				local id = tonumber(line:GetValue(1)) or -1
 
@@ -74,11 +77,40 @@ function OpenAdminGUI ( len )
 				tgui.reason:SetEditable ( false )
 
 			end )
-		menu:AddOption('Remove', 
+		menu:AddOption("Remove", 
 			function() 
 				local id = tonumber(line:GetValue(1)) or -1
 				LocalPlayer():ConCommand( "srp_remove " .. id )
 			end )
+			
+		local quickactions = menu:AddSubMenu( "Quick Actions" )
+		
+		-- Reported Player
+		if line:GetValue(2) ~= "None" then
+			quickactions:AddOption ( "Bring Reported Player" , function() 
+				LocalPlayer():ConCommand ( "ulx bring \"" .. line:GetValue(2) .. "\"" )
+			end)
+		end
+		if line:GetValue(2) ~= "None" then
+			quickactions:AddOption ( "Goto Reported Player" , function() 
+				LocalPlayer():ConCommand ( "ulx goto \"" .. line:GetValue(2) .. "\"" )
+			end)
+		end
+		
+		-- Reporting Player
+		if line:GetValue(3) ~= "None" then
+			quickactions:AddOption ( "Bring Reporting Player" , function() 
+				LocalPlayer():ConCommand ( "ulx bring \"" .. line:GetValue(3) .. "\"" )
+			end)
+		end
+	
+		
+		if line:GetValue(3) ~= "None" then
+			quickactions:AddOption ( "Goto Reporting Player" , function() 
+				LocalPlayer():ConCommand ( "ulx goto \"" .. line:GetValue(3) .. "\"" )
+			end)
+		end
+	
 		menu:Open()
 	end
 
@@ -156,23 +188,44 @@ end
 net.Receive ( "SRP_OPENMENU", OpenGUI )
 
 function SubmitPlayerReport ( ply, reason )
-	net.Start ( "SRP_SENDREPORT" )
-		net.WriteBit ( true )
-		net.WriteEntity ( ply )
-		net.WriteString ( reason )
-	net.SendToServer ( )
 
-	chat.AddText(Color(0,255,0), LOCAL.REPORT_SENT)
+	if CurTime() >= last_report_time then
+		net.Start ( "SRP_SENDREPORT" )
+			net.WriteBit ( true )
+			net.WriteEntity ( ply )
+			net.WriteString ( reason )
+		net.SendToServer ( )
+
+		chat.AddText(Color(0,255,0), LOCAL.REPORT_SENT)
+		
+		last_report_time = CurTime() + report_cooldown
+		return true
+	else
+		chat.AddText ( Color(255,0,0), LOCAL.WAIT_MSG )
+		return false
+	end
+	
+	return false
 end
 
 function SubmitCustomReport ( reason, information )
-	net.Start ( "SRP_SENDREPORT" )
-		net.WriteBit ( false )
-		net.WriteString ( reason )
-		net.WriteString ( information )
-	net.SendToServer ( )
+	if CurTime() >= last_report_time then
+		net.Start ( "SRP_SENDREPORT" )
+			net.WriteBit ( false )
+			net.WriteString ( reason )
+			net.WriteString ( information )
+		net.SendToServer ( )
 
-	chat.AddText(Color(0,255,0), LOCAL.REPORT_SENT)
+		chat.AddText(Color(0,255,0), LOCAL.REPORT_SENT)
+		
+		last_report_time = CurTime() + report_cooldown
+		return true
+	else
+		chat.AddText ( Color(255,0,0), LOCAL.WAIT_MSG )
+		return false
+	end
+	
+	return false
 end
 
 
@@ -251,7 +304,10 @@ function GUIAddCustomFields ( reporttype )
 				end
 
 
-				SubmitPlayerReport ( selected_player,  reason )
+				if SubmitPlayerReport ( selected_player, reason ) then
+					srp_report_gui:Remove ( )
+					srp_report_gui = nil				
+				end
 			else
 				chat.AddText(Color(255,0,0), LOCAL.UNKNOWN_PLAYER)
 			end
@@ -311,7 +367,10 @@ function GUIAddCustomFields ( reporttype )
 					return
 				end
 
-				SubmitCustomReport ( selected_reason, information )
+				if SubmitCustomReport ( selected_reason, information ) then
+					srp_report_gui:Remove ( )
+					srp_report_gui = nil
+				end
 
 			else
 				chat.AddText(Color(255,0,0), LOCAL.UNKNOWN_REASON)
@@ -330,6 +389,14 @@ function GUIAddCustomFields ( reporttype )
 end
 
 
+-- Misc
+if notification_message then
+	function SendNotification()
+		chat.AddText ( Color(255,0,0), "[SRP:] ", Color(255,255,255) , LOCAL.NOTIFICATION_MSG )
+	end
+	timer.Create( "srp_Notifications", 60, 0, SendNotification )
+end
+
 -- Recv
 function srp_ReceiveNewReport ( len )
 	local tbl = net.ReadTable ( )
@@ -347,7 +414,7 @@ function srp_ReceiveNewReport ( len )
 	
 
 	if play_sound then 
-		surface.PlaySound ( "simplereports/newreport.wav" )
+		surface.PlaySound ( "buttons/button16.wav" )
 	end
 end
 

@@ -9,6 +9,9 @@
 
 lang = "EN" -- Language to use, please define it at the bottom of this file!
 play_sound = true -- play sound if a report arrives?
+report_cooldown = 5 -- how many seconds a user needs to wait to apply another report?
+notification_message = true -- should players receive a message every (notification_time) seconds?
+notification_time = 60
 
 
 PREDEF_REASONS = { -- Reasons for the custom (nonplayer) report
@@ -21,6 +24,9 @@ LOCAL_TEXT = {}
 
 -- Languages
 LOCAL_TEXT["EN"] = {
+
+	NOTIFICATION_MSG = "This Server allows you to Report players by typing !report",
+
 	SELECT_TYPE = "Select Type",
 	TYPE_PLAYER = "Report Player",
 	TYPE_MISC = "Send Message to Online Admins",
@@ -46,7 +52,9 @@ LOCAL_TEXT["EN"] = {
 	TEXT_OTHER = "Other",
 
 	REPORT_TEXT_PLAYER = "%s wrote an Report against %s type !reports to open them.",
-	REPORT_TEXT_CUSTOM = "%s wrote an Report with the Reason: %s"
+	REPORT_TEXT_CUSTOM = "%s wrote an Report with the Reason: %s",
+	
+	WAIT_MSG = "You need to wait " .. report_cooldown .. " Seconds between your reports."
 }
 
 -- Dont touch

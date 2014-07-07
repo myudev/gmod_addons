@@ -90,8 +90,6 @@ end
 net.Receive ( "SRP_SENDREPORT", srp_ReceivePlayeReport )
 
 function srp_Initialize ( )
-	
-	resource.AddFile("sound/simplereports/newreport.wav")
 	ULib.ucl.registerAccess( "srp_access", ULib.ACCESS_OPERATOR, "Gives the user the ability to show and process Reports.", "Simple Reports" )  
 end
 hook.Add( "Initialize", "srp_Initialize", srp_Initialize )
