@@ -22,7 +22,7 @@ advjl_groups = {
 	// Group: Superadmin
 	{
 		groupname="superadmin", 
-		playsound="superadminjoin.wav", 
+		playsound="", 
 		leftsound="", 
 		messageformat="[JOIN:] %s our shiny Owner from [%s] connected!", 
 		messageformatdc="[DISCONNECT:] %s left us!", 
@@ -32,7 +32,7 @@ advjl_groups = {
 	// Group Admin
 	{
 		groupname="admin", 
-		playsound="adminjoin.wav", 
+		playsound="", 
 		leftsound="", 
 		messageformat="[JOIN:] %s our shiny Admin from [%s] connected!", 
 		messageformatdc="[DISCONNECT:] %s left us!", 
@@ -42,7 +42,7 @@ advjl_groups = {
 	// Group Operator
 	{
 		groupname="operator", 
-		playsound="opjoin.wav", 
+		playsound="", 
 		leftsound="",  
 		messageformat="[JOIN:] %s our shiny Operator from [%s] connected!", 
 		messageformatdc="[DISCONNECT:] %s left us!", 
