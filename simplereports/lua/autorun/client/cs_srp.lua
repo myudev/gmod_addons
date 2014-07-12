@@ -394,7 +394,7 @@ if notification_message then
 	function SendNotification()
 		chat.AddText ( Color(255,0,0), "[SRP:] ", Color(255,255,255) , LOCAL.NOTIFICATION_MSG )
 	end
-	timer.Create( "srp_Notifications", 60, 0, SendNotification )
+	timer.Create( "srp_Notifications", notification_time, 0, SendNotification )
 end
 
 -- Recv

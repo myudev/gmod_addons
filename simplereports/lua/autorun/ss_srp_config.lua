@@ -11,7 +11,7 @@ lang = "EN" -- Language to use, please define it at the bottom of this file!
 play_sound = true -- play sound if a report arrives?
 report_cooldown = 5 -- how many seconds a user needs to wait to apply another report?
 notification_message = true -- should players receive a message every (notification_time) seconds?
-notification_time = 360
+notification_time = 480
 
 
 PREDEF_REASONS = { -- Reasons for the custom (nonplayer) report
