@@ -113,17 +113,18 @@ function OpenAdminGUI ( len )
 	
 		menu:Open()
 	end
-
-
+	
 	for i=1,#reports do
+		local id = reports [ i ][ 4 ] or 0
 		local repPlayer = (reports [ i ][ 1 ] and reports [ i ][ 1 ]:IsValid()) and reports [ i ][ 1 ]:Nick() or "None"
 		local repBy = (reports [ i ][ 2 ] and reports [ i ][ 2 ]:IsValid()) and reports [ i ][ 2 ]:Nick() or "None"
-
+		local reason = reports [ i ][ 3 ] or ""
+		local description = reports [ i ][ 5 ] or ""
 
 		if not ( reports [ i ][ 1 ] and reports [ i ][ 1 ]:IsValid() ) then
-			srp_admin_gui.list:AddLine ( reports [ i ][ 4 ], repPlayer, repBy, "("..reports [ i ][ 3 ]..":) "..reports [ i ][ 5 ] )
+			srp_admin_gui.list:AddLine ( id, repPlayer, repBy, "("..reason..":) ".. description )
 		else
-			srp_admin_gui.list:AddLine ( reports [ i ][ 4 ], repPlayer, repBy, reports [ i ][ 3 ] )
+			srp_admin_gui.list:AddLine ( id, repPlayer, repBy, reason )
 		end
 	end
 
