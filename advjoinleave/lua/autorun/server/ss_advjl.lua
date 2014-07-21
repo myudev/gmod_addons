@@ -10,6 +10,10 @@ local iGroupTableSize = 0 -- well it's not that huge of a performance hit for co
 local iDefaultID = 0
 local netMsgStr = "advjl_info"
 
+if not advjl_msgdelay then
+	include ( "ss_advjl_config.lua" )
+end
+
 function advjl_Debug(msg)
 	--ServerLog ( "[ADVJL:] " .. msg .. "\n" )
 end
