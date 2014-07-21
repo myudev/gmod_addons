@@ -12,6 +12,9 @@ util.AddNetworkString ( "SRP_SENDREPORT" )
 util.AddNetworkString ( "SRP_NEWREPORT" )
 util.AddNetworkString ( "SRP_OPENMENU" )
 
+if not LOCAL then
+	include ( "ss_srp_config.lua" )
+end
 
 function srp_Debug(msg)
 	ServerLog ( "[SRP:] " .. msg .. "\n" )

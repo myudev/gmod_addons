@@ -16,6 +16,9 @@ local iBaseWidth = 350
 local iBaseHeight = 300
 local iSelectsHeight = 25
 
+if not LOCAL then
+	include ( "ss_srp_config.lua" )
+end
 
 
 function OpenAdminGUI ( len ) 
