@@ -59,6 +59,10 @@ function srp_SendNewReport ( tbl )
 	end
 end
 
+function srp_SendMsg ( ply, msg )
+	ply:PrintMessage ( HUD_PRINTTALK, "[SRP:] " .. msg )
+end
+
 function srp_OpenAdminMenu ( ply )
 	net.Start ( "SRP_SENDREPORT" )
 		net.WriteTable ( reports )
@@ -110,12 +114,12 @@ concommand.Add( "srp_report", srp_concmd_report )
 
 function srp_concmd_remove( ply, _, args )
 	if not srp_IsAdmin( ply ) then
-		sn_SendMsg ( ply, "You do not have the sufficient permissions for this command.")
+		srp_SendMsg ( ply, "You do not have the sufficient permissions for this command.")
 		return
 	end
 	
 	if not args[ 1 ] then
-		sn_SendMsg ( ply, "Arguments: srp_remove <id>" )
+		srp_SendMsg ( ply, "Arguments: srp_remove <id>" )
 		return
 	end
 
@@ -132,7 +136,7 @@ concommand.Add( "srp_remove", srp_concmd_remove )
 
 function srp_concmd_remove( ply )
 	if not srp_IsAdmin( ply ) then
-		sn_SendMsg ( ply, "You do not have the sufficient permissions for this command.")
+		srp_SendMsg ( ply, "You do not have the sufficient permissions for this command.")
 		return
 	end
 
