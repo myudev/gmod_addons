@@ -6,7 +6,6 @@
 		Mail: myudev0@googlemail.com
 		Steam: http://steamcommunity.com/id/fannney/
 ]]
-local iGroupTableSize = 0 -- well it's not that huge of a performance hit for counting a table entries but who cares right?
 local iDefaultID = 0
 local netMsgStr = "advjl_info"
 
@@ -22,10 +21,8 @@ end
 function advjl_Initialize( )
 	util.AddNetworkString ( netMsgStr )
 
-	iGroupTableSize = #advjl_groups
-
 	-- Add Sounds
-	for i=1,iGroupTableSize do
+	for i=1,#advjl_groups do
 
 		if not advjl_groups [ i ].playsound == "" then resource.AddFile ( "sound/advjl/" .. advjl_groups [ i ].playsound ) end
 		if not advjl_groups [ i ].leftsound == "" then resource.AddFile ( "sound/advjl/" .. advjl_groups [ i ].leftsound ) end
@@ -137,9 +134,8 @@ end
 function advjl_PreHandleJoinLeftMessage ( ply, joinleave )
 	if not ply:IsValid() or ply:IsBot() then return end -- he left us or he's a bot :'(
 
-	iGroupTableSize = #advjl_groups
 	-- We could do this abit more elegant, dont we?
-	for i=1,iGroupTableSize do
+	for i=1,#advjl_groups do
 		if advjl_groups [ i ].groupname == "" then
 			iDefaultID = i
 			continue -- skip default only custom group handling here
