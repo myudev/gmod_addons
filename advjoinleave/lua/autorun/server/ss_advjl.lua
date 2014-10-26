@@ -36,7 +36,7 @@ hook.Add( "Initialize", "advjl_Initialize", advjl_Initialize )
 
 function advjl_IsPlayerInGroup ( ply, group )
 	local rank = ""
-	if self.EV_GetRank then 
+	if ply.EV_GetRank then 
 		rank = ply:EV_GetRank()
 	elseif ULib then
 		rank = ply:GetUserGroup()
