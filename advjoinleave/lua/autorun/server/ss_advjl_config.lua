@@ -19,7 +19,7 @@ advjl_groups = {
 	-- messageformatdc = The format of how the addon displays the disconnect message IT DOES NOT SUPPORT RESOLVECOUNTRY for obvious reasons.
 	-- INFO: If you let messageformat empty it won't send the message but still would play the sound, so if you want to disable it for a group just let palysound and messageformat blank.
 
-	// Group: Superadmin
+	-- Group: Superadmin
 	{
 		groupname="superadmin", 
 		playsound="", 
@@ -29,7 +29,7 @@ advjl_groups = {
 		resolvecountry=true
 	},
 	
-	// Group Admin
+	-- Group: Admin
 	{
 		groupname="admin", 
 		playsound="", 
@@ -39,7 +39,7 @@ advjl_groups = {
 		resolvecountry=true
 	},
 	
-	// Group Operator
+	-- Group: Operator
 	{
 		groupname="operator", 
 		playsound="", 
@@ -49,7 +49,7 @@ advjl_groups = {
 		resolvecountry=true
 	},
 
-	// Default Group (everything expect these groups above)
+	-- Default Group (everything expect these groups above)
 	{
 		groupname="", 
 		playsound="", 
