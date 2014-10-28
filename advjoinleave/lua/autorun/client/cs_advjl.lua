@@ -60,8 +60,8 @@ net.Receive( netMsgStr, function( len )
 	local data = net.ReadTable()
 	if data then 
 		chat.AddText ( Color(255,255,255,255), data.msg )
-		if not data.playsound == "" then
-			surface.PlaySound ( "sound/advjl/" .. data.playsound.playsound )
+		if not (data.playsound == "") then
+			surface.PlaySound ( "advjl/" .. data.playsound )
 		end
 	end
 end)
