@@ -24,14 +24,15 @@ function advjl_Initialize( )
 	-- Add Sounds
 	for i=1,#advjl_groups do
 
-		if not advjl_groups [ i ].playsound == "" then resource.AddFile ( "sound/advjl/" .. advjl_groups [ i ].playsound ) end
-		if not advjl_groups [ i ].leftsound == "" then resource.AddFile ( "sound/advjl/" .. advjl_groups [ i ].leftsound ) end
+		if not (advjl_groups [ i ].playsound == "") then resource.AddFile ( "sound/advjl/" .. advjl_groups [ i ].playsound ) end
+		if not (advjl_groups [ i ].leftsound == "") then resource.AddFile ( "sound/advjl/" .. advjl_groups [ i ].leftsound ) end
 
 	end
 
 	
 end
 hook.Add( "Initialize", "advjl_Initialize", advjl_Initialize )
+advjl_Initialize()
 
 
 function advjl_IsPlayerInGroup ( ply, group )
@@ -59,6 +60,7 @@ function advjl_ShowJoinMessage ( ply, arrid, country )
 	if country == nil then
 		country = "ERR"
 	end
+
 
 	if advjl_groups [ arrid ].resolvecountry then
 		joinMSG = string.format( advjl_groups [ arrid ].messageformat, plyNick, country ) -- with country 
@@ -199,3 +201,4 @@ local function advjl_PlayerDisconnect ( ply )
 	advjl_PreHandleJoinLeftMessage ( ply, false )
 end
 hook.Add( "PlayerDisconnected", "advjl_PlayerDisconnect", advjl_PlayerDisconnect )
+
