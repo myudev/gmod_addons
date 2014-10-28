@@ -53,6 +53,7 @@ advjl_groups = {
 	{
 		groupname="", 
 		playsound="", 
+		leftsound="",
 		messageformat="[JOIN:] %s connected to our Server from [%s] welcome!", 
 		messageformatdc="[DISCONNECT:] %s left us!", 
 		resolvecountry=true
