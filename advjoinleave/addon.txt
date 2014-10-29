@@ -1,8 +1,0 @@
-"AddonInfo"
-{
-	"name"				"Advanced Join and Leave"
-	"version"			"0.1B"
-	"author_name"			"Fannney' aka. MyU"
-	"info"				"Advanced Join,Leave Messages and Sounds."
-	"override"			"0"
-}
