@@ -51,8 +51,8 @@ advjl_groups = {
 		groupname="superadmin", 
 		playsound="", 
 		leftsound="", 
-		messageformat="#FFFFFF[#9C7878JOIN:#FFFFFF] !playername! joined our server from #FFFFFF[#9C7878!countryCode!#FFFFFF]", 
-		messageformatdc="#FFFFFF[#9C7878LEFT:#FFFFFF] !playername![!steamid!] left us.", 
+		messageformat="#FFFFFF[#25DB00JOIN:#FFFFFF] !playername! joined our server from #FFFFFF[#25DB00!countryCode!#FFFFFF]", 
+		messageformatdc="#FFFFFF[#DB0000LEFT:#FFFFFF] !playername![!steamid!] left us.", 
 		resolvecountry=true
 	},
 	
@@ -61,8 +61,8 @@ advjl_groups = {
 		groupname="admin", 
 		playsound="", 
 		leftsound="", 
-		messageformat="#FFFFFF[#9C7878JOIN:#FFFFFF] !playername! joined our server from #FFFFFF[#9C7878!countryCode!#FFFFFF]", 
-		messageformatdc="#FFFFFF[#9C7878LEFT:#FFFFFF] !playername![!steamid!] left us.", 
+		messageformat="#FFFFFF[#25DB00JOIN:#FFFFFF] !playername! joined our server from #FFFFFF[#25DB00!countryCode!#FFFFFF]", 
+		messageformatdc="#FFFFFF[#DB0000LEFT:#FFFFFF] !playername![!steamid!] left us.", 
 		resolvecountry=true
 	},
 	
@@ -71,8 +71,8 @@ advjl_groups = {
 		groupname="operator", 
 		playsound="", 
 		leftsound="",  
-		messageformat="#FFFFFF[#9C7878JOIN:#FFFFFF] !playername! joined our server from #FFFFFF[#9C7878!countryCode!#FFFFFF]", 
-		messageformatdc="#FFFFFF[#9C7878LEFT:#FFFFFF] !playername![!steamid!] left us.", 
+		messageformat="#FFFFFF[#25DB00JOIN:#FFFFFF] !playername! joined our server from #FFFFFF[#25DB00!countryCode!#FFFFFF]", 
+		messageformatdc="#FFFFFF[#DB0000LEFT:#FFFFFF] !playername![!steamid!] left us.", 
 		resolvecountry=true
 	},
 
@@ -81,8 +81,8 @@ advjl_groups = {
 		groupname="", 
 		playsound="", 
 		leftsound="",
-		messageformat="#FFFFFF[#9C7878JOIN:#FFFFFF] !playername! joined our server from #FFFFFF[#9C7878!countryCode!#FFFFFF]", 
-		messageformatdc="#FFFFFF[#9C7878LEFT:#FFFFFF] !playername![!steamid!] left us.", 
+		messageformat="#FFFFFF[#25DB00JOIN:#FFFFFF] !playername! joined our server from #FFFFFF[#25DB00!countryCode!#FFFFFF]", 
+		messageformatdc="#FFFFFF[#DB0000LEFT:#FFFFFF] !playername![!steamid!] left us.", 
 		resolvecountry=true
 	} -- DEFAULT MESSAGE JUST EDIT IF YOU NEED TO AND DONT ADD MULTIPLIE ONES OF THIS
 }
