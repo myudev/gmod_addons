@@ -13,12 +13,12 @@ if not advjl_msgdelay then
 	include ( "ss_advjl_config.lua" )
 end
 
-function advjl_Debug(msg)
+local function advjl_Debug(msg)
 	--ServerLog ( "[ADVJL:] " .. msg .. "\n" )
 end
 
 
-function advjl_Initialize( )
+local function advjl_Initialize( )
 	util.AddNetworkString ( netMsgStr )
 
 	-- Add Sounds
@@ -34,8 +34,7 @@ end
 hook.Add( "Initialize", "advjl_Initialize", advjl_Initialize )
 advjl_Initialize()
 
-
-function advjl_IsPlayerInGroup ( ply, group )
+local function advjl_GetPlayerGroup ( ply )
 	local rank = ""
 	if ply.EV_GetRank then 
 		rank = ply:EV_GetRank()
@@ -44,29 +43,51 @@ function advjl_IsPlayerInGroup ( ply, group )
 	else
 		rank = ply:GetNWString ( "UserGroup" )
 	end
-	return (rank==group) and true or false
+	return rank
+end
+
+local function advjl_IsPlayerInGroup ( ply, group )
+	return (advjl_GetPlayerGroup(ply)==group) and true or false
 end
 
 
-function advjl_ShowJoinMessage ( ply, arrid, country )
+local function advjl_ShowJoinMessage ( ply, arrid, geo_data )
 
 	if not ply:IsValid() then return end
 
 	if advjl_groups [ arrid ].playsound == "" and advjl_groups [ arrid ].messageformat == "" then return end -- we don't want anything from you :( !
 
 	local plyNick = ply:Nick()
-	local joinMSG = ""
+	local joinMSG = advjl_groups [ arrid ].messageformat
 
-	if country == nil then
-		country = "ERR"
+	if geo_data == nil then
+		geo_data = { -- Provide some data, even if it's failed (good for local loopback)
+			zip     		=		"0",
+			city    		=       "N/A",
+			org    			=       "N/A",
+			status  		=       "N/A",
+			region  		=       "N/A",
+			timezone        =       "N/A",
+			regionName      =       "N/A",
+			country 		=       "N/A",
+			lon     		=       0,
+			countryCode     =       "N/A",
+			query   		=       "N/A",
+			isp     		=       "N/A",
+			as      		=       "N/A",
+			lat     		=       0.0
+		}
 	end
 
-
-	if advjl_groups [ arrid ].resolvecountry then
-		joinMSG = string.format( advjl_groups [ arrid ].messageformat, plyNick, country ) -- with country 
-	else
-		joinMSG = string.format( advjl_groups [ arrid ].messageformat, plyNick ) -- without country
+	geo_data["playername"] = plyNick
+	geo_data["steamid"] = ply:SteamID()
+	geo_data["group"] = advjl_GetPlayerGroup(ply)
+	ply.geo_dat_cached = geo_data
+	for k,v in pairs(geo_data) do
+		local match = "!"..k.."!"
+		joinMSG = string.gsub( joinMSG, match, tostring(v), 1 ) 
 	end
+
 
 	-- finally we can tell them the good news ;)
 
@@ -84,7 +105,7 @@ function advjl_ShowJoinMessage ( ply, arrid, country )
     end
 end
 
-function advjl_ShowDisconnectMessage ( ply, arrid )
+local function advjl_ShowDisconnectMessage ( ply, arrid )
 
 	if not ply:IsValid() then
 		return
@@ -93,8 +114,14 @@ function advjl_ShowDisconnectMessage ( ply, arrid )
 	if advjl_groups [ arrid ].leftsound == "" and advjl_groups [ arrid ].messageformatdc == "" then return end -- we don't want anything from you :( !
 
 	local plyNick = ply:Nick()
-	local leftMsg = string.format( advjl_groups [ arrid ].messageformatdc, plyNick ) -- without country
+	local leftMsg = advjl_groups [ arrid ].messageformatdc
 
+
+
+	for k,v in pairs(ply.geo_dat_cached) do
+		local match = "!"..k.."!"
+		leftMsg = string.gsub( leftMsg, match, tostring(v), 1 ) 
+	end
 
 	local infoTable = {
 		msg = leftMsg,
@@ -110,8 +137,7 @@ function advjl_ShowDisconnectMessage ( ply, arrid )
     end
 end
 
-
-function advjl_ProcessCountry ( ply, arrid )
+local function advjl_ProcessCountry ( ply, arrid )
 	local plyAddr = ply:IPAddress ( )
 	if plyAddr == "loopback" then return end -- singleplayer seession?
 
@@ -127,7 +153,7 @@ function advjl_ProcessCountry ( ply, arrid )
 				data = util.JSONToTable ( data ) -- it actually returns the data in json format
 
 				if data [ "countryCode" ] then -- damn so much checking is going on
-					advjl_ShowJoinMessage ( ply, arrid, data [ "countryCode" ] ) -- finally!
+					advjl_ShowJoinMessage ( ply, arrid, data ) -- finally!
 				else
 					-- srsly ?
 					advjl_ShowJoinMessage ( ply, arrid, nil ) -- finally all this for nothing!
@@ -141,7 +167,7 @@ function advjl_ProcessCountry ( ply, arrid )
 		end)
 end
 
-function advjl_PreHandleJoinLeftMessage ( ply, joinleave )
+local function advjl_PreHandleJoinLeftMessage ( ply, joinleave )
 	if not ply:IsValid() or ply:IsBot() then return end -- he left us or he's a bot :'(
 
 	-- We could do this abit more elegant, dont we?
