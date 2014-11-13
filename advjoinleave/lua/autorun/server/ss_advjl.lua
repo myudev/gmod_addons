@@ -79,7 +79,7 @@ local function advjl_ShowJoinMessage ( ply, arrid, geo_data )
 		}
 	end
 
-	geo_data["playername"] = plyNick
+	geo_data["playername"] = string.gsub(plyNick, "#", "")
 	geo_data["steamid"] = ply:SteamID()
 	geo_data["group"] = advjl_GetPlayerGroup(ply)
 	ply.geo_dat_cached = geo_data
