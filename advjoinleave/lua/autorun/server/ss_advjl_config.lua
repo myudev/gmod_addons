@@ -9,6 +9,7 @@
 
 advjl_sendtoownplayer = true -- set the own player the information too.
 advjl_msgdelay = 3 -- When it should send the message after Player connect (seconds)? usually you want to keep it at 3 seconds after join
+advjl_sleeponstart = 25 -- how many seconds after map start the plugin should mute sounds
 
 advjl_groups = {
 	-- groupname = The Name of the Group to play the sound and display it's join message (IF BLANK IT'S THE DEFAULT MESSAGE).
