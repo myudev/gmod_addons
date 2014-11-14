@@ -15,7 +15,7 @@ if not advjl_msgdelay then
 end
 
 local function advjl_Debug(msg)
-	ServerLog ( "[ADVJL:] " .. msg .. "\n" )
+	--ServerLog ( "[ADVJL:] " .. msg .. "\n" )
 end
 
 
