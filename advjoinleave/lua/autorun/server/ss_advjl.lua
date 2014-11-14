@@ -8,14 +8,16 @@
 ]]
 local iDefaultID = 0
 local netMsgStr = "advjl_info"
+local bEnabled = false
 
 if not advjl_msgdelay then
 	include ( "ss_advjl_config.lua" )
 end
 
 local function advjl_Debug(msg)
-	--ServerLog ( "[ADVJL:] " .. msg .. "\n" )
+	ServerLog ( "[ADVJL:] " .. msg .. "\n" )
 end
+
 
 
 local function advjl_Initialize( )
@@ -23,11 +25,16 @@ local function advjl_Initialize( )
 
 	-- Add Sounds
 	for i=1,#advjl_groups do
-
 		if not (advjl_groups [ i ].playsound == "") then resource.AddFile ( "sound/advjl/" .. advjl_groups [ i ].playsound ) end
 		if not (advjl_groups [ i ].leftsound == "") then resource.AddFile ( "sound/advjl/" .. advjl_groups [ i ].leftsound ) end
-
 	end
+
+	ServerLog ( "[ADVJL:] Muting Join messages for " .. advjl_sleeponstart .. " seconds.\n" )
+	bEnabled = false -- should reset anyway, but whatever
+	timer.Simple (advjl_sleeponstart, function()
+		print ( "[ADVJL:] Join messages unmuted!\n" )
+		bEnabled = true
+	end)
 
 	
 end
@@ -219,12 +226,16 @@ end
 
 -- Hooks
 local function advjl_PlayerJoin ( ply )
-	timer.Simple( advjl_msgdelay, function() advjl_PreHandleJoinLeftMessage ( ply, true ) end )
+	if bEnabled then
+		timer.Simple( advjl_msgdelay, function() advjl_PreHandleJoinLeftMessage ( ply, true ) end )
+	end
 end
 hook.Add( "PlayerInitialSpawn", "advjl_PlayerJoin", advjl_PlayerJoin )
 
 local function advjl_PlayerDisconnect ( ply )
-	advjl_PreHandleJoinLeftMessage ( ply, false )
+	if bEnabled then
+		advjl_PreHandleJoinLeftMessage ( ply, false )
+	end
 end
 hook.Add( "PlayerDisconnected", "advjl_PlayerDisconnect", advjl_PlayerDisconnect )
 
