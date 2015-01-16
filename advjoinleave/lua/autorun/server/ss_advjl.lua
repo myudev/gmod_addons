@@ -117,6 +117,9 @@ local function advjl_ShowDisconnectMessage ( ply, arrid )
 	if not ply:IsValid() then
 		return
 	end
+	if not ply.geo_dat_cached then
+		return
+	end
 
 	if advjl_groups [ arrid ].leftsound == "" and advjl_groups [ arrid ].messageformatdc == "" then return end -- we don't want anything from you :( !
 
