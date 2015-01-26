@@ -120,6 +120,9 @@ local function advjl_ShowDisconnectMessage ( ply, arrid )
 	if not ply.geo_dat_cached then
 		return
 	end
+	if not advjl_groups [ arrid ] then
+		return -- should not be needed, but for care .
+	end
 
 	if advjl_groups [ arrid ].leftsound == "" and advjl_groups [ arrid ].messageformatdc == "" then return end -- we don't want anything from you :( !
 
