@@ -7,12 +7,6 @@
 		Steam: http://steamcommunity.com/id/fannney/
 ]]--
 
-<<<<<<< HEAD
-=======
-advjl_sendtoownplayer = true -- set the own player the information too.
-advjl_msgdelay = 3 -- When it should send the message after Player connect (seconds)? usually you want to keep it at 3 seconds after join
-advjl_sleeponstart = 25 -- how many seconds after map start the plugin should mute sounds
->>>>>>> origin/advjoinleave
 
 --[[
 	Please read:
@@ -40,7 +34,6 @@ advjl_sleeponstart = 25 -- how many seconds after map start the plugin should mu
 				!group! 		- Player's current group like "superadmin".
 				!steamid! 		- Player's Steam ID like "STEAM_0:0:37706701".
 
-<<<<<<< HEAD
 	Some other stuff:
 		You can keep the join messages empty to omit them.
 ]]--
@@ -107,45 +100,3 @@ advjl = {
 		}
 	}
 }
-=======
-	-- Group: Superadmin
-	{
-		groupname="superadmin", 
-		playsound="", 
-		leftsound="", 
-		messageformat="#FFFFFF[#25DB00JOIN:#FFFFFF] !playername! joined our server from #FFFFFF[#25DB00!countryCode!#FFFFFF]", 
-		messageformatdc="#FFFFFF[#DB0000LEFT:#FFFFFF] !playername![!steamid!] left us.", 
-		resolvecountry=true
-	},
-	
-	-- Group: Admin
-	{
-		groupname="admin", 
-		playsound="", 
-		leftsound="", 
-		messageformat="#FFFFFF[#25DB00JOIN:#FFFFFF] !playername! joined our server from #FFFFFF[#25DB00!countryCode!#FFFFFF]", 
-		messageformatdc="#FFFFFF[#DB0000LEFT:#FFFFFF] !playername![!steamid!] left us.", 
-		resolvecountry=true
-	},
-	
-	-- Group: Operator
-	{
-		groupname="operator", 
-		playsound="", 
-		leftsound="",  
-		messageformat="#FFFFFF[#25DB00JOIN:#FFFFFF] !playername! joined our server from #FFFFFF[#25DB00!countryCode!#FFFFFF]", 
-		messageformatdc="#FFFFFF[#DB0000LEFT:#FFFFFF] !playername![!steamid!] left us.", 
-		resolvecountry=true
-	},
-
-	-- Default Group (everything expect these groups above)
-	{
-		groupname="", 
-		playsound="", 
-		leftsound="",
-		messageformat="#FFFFFF[#25DB00JOIN:#FFFFFF] !playername! joined our server from #FFFFFF[#25DB00!countryCode!#FFFFFF]", 
-		messageformatdc="#FFFFFF[#DB0000LEFT:#FFFFFF] !playername![!steamid!] left us.", 
-		resolvecountry=true
-	} -- DEFAULT MESSAGE JUST EDIT IF YOU NEED TO AND DONT ADD MULTIPLIE ONES OF THIS
-}
->>>>>>> origin/advjoinleave

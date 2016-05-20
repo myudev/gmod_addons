@@ -20,7 +20,7 @@ local function AddText_Colorful ( text )
 			local colend = i+7
 			local color = string.sub ( text, i+1, i+6 )
 
-			local r,g,b = tonumber ( "0x" .. string.sub(color, 1, 2) ), tonumber ( "0x" .. string.sub(color, 3, 4) ), tonumber ( "0x" .. string.sub(color, 5, 6) ) -- hu, hacky! 
+			local r,g,b = tonumber ( "0x" .. string.sub(color, 1, 2) ), tonumber ( "0x" .. string.sub(color, 2, 3) ), tonumber ( "0x" .. string.sub(color, 3, 4) ) -- hu, hacky! 
 			local iLastText = 0
 			for ii=colend, #text do
 				local charInner = string.sub ( text , ii, ii )
