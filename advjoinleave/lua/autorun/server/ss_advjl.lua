@@ -8,6 +8,7 @@
 ]]
 local iDefaultID = 0
 local netMsgStr = "advjl_info"
+local bEnabled = false
 
 if not advjl_msgdelay then
 	include ( "ss_advjl_config.lua" )
@@ -29,6 +30,12 @@ local function advjl_Initialize( )
 
 	end
 
+	ServerLog ( "[ADVJL:] Muting Join messages for " .. advjl.SleepTime .. " seconds.\n" )
+	bEnabled = false -- should reset anyway, but whatever
+	timer.Simple (advjl.SleepTime, function()
+		print ( "[ADVJL:] Join messages unmuted!\n" )
+		bEnabled = true
+	end)
 	
 end
 hook.Add( "Initialize", "advjl_Initialize", advjl_Initialize )
@@ -91,7 +98,7 @@ local function advjl_ShowJoinMessage ( ply, arrid, geo_data )
 		}
 	end
 
-	geo_data["playername"] = plyNick
+	geo_data["playername"] = string.gsub(plyNick, "#", "")
 	geo_data["steamid"] = ply:SteamID()
 	geo_data["group"] = advjl_GetPlayerGroup(ply)
 	ply.geo_dat_cached = geo_data
@@ -127,6 +134,14 @@ local function advjl_ShowDisconnectMessage ( ply, arrid )
 
 	if not ply:IsValid() then
 		return
+	end
+
+	if not ply.geo_dat_cached then
+		return
+	end
+
+	if not advjl.groups [ arrid ] then
+		return -- should not be needed, but for care .
 	end
 
 	if advjl.groups [ arrid ].sounds.leave == "" and advjl.groups [ arrid ].messages.leave == "" then return end -- we don't want anything from you :( !
@@ -189,6 +204,7 @@ end
 local function advjl_PreHandleJoinLeftMessage ( ply, joinleave )
 	if not ply:IsValid() or ply:IsBot() then return end -- he left us or he's a bot :'(
 
+
 	-- We could do this abit more elegant, dont we?
 	for i=1,#advjl.groups do
 		if advjl.groups [ i ].groupnames == nil then
@@ -237,12 +253,16 @@ end
 
 -- Hooks
 local function advjl_PlayerJoin ( ply )
-	timer.Simple( advjl.MsgDelay, function() advjl_PreHandleJoinLeftMessage ( ply, true ) end )
+	if bEnabled then
+		timer.Simple( advjl.MsgDelay, function() advjl_PreHandleJoinLeftMessage ( ply, true ) end )
+	end
 end
 hook.Add( "PlayerInitialSpawn", "advjl_PlayerJoin", advjl_PlayerJoin )
 
 local function advjl_PlayerDisconnect ( ply )
-	advjl_PreHandleJoinLeftMessage ( ply, false )
+	if bEnabled then
+		advjl_PreHandleJoinLeftMessage ( ply, false )
+	end
 end
 hook.Add( "PlayerDisconnected", "advjl_PlayerDisconnect", advjl_PlayerDisconnect )
 

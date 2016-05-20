@@ -43,6 +43,7 @@ advjl = {
 	---- General Settings
 	SkipOwnPlayer = false, -- This allows you to hide the message for the player that connects.
 	MsgDelay = 3, -- How many seconds should the script wait before sending the connect message?
+	SleepTime = 10, -- How many seconds the addon should sleep after map change? (to avoid sound / message spams)
 	API = "http://ip-api.com/json/", -- DO NOT CHANGE UNLESS YOU KNOW WHAT YOU'RE DOING (i hope caps helps)
 
 	---- Group Settings
