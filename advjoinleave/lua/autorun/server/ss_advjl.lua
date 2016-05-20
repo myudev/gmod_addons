@@ -21,11 +21,11 @@ end
 local function advjl_Initialize( )
 	util.AddNetworkString ( netMsgStr )
 
-	-- Add Sounds
-	for i=1,#advjl_groups do
+	-- Add Sounds 
+	for i=1,#advjl.groups do
 
-		if not (advjl_groups [ i ].playsound == "") then resource.AddFile ( "sound/advjl/" .. advjl_groups [ i ].playsound ) end
-		if not (advjl_groups [ i ].leftsound == "") then resource.AddFile ( "sound/advjl/" .. advjl_groups [ i ].leftsound ) end
+		if not (advjl.groups [ i ].sounds.join == "") then resource.AddFile ( "sound/advjl/" .. advjl.groups [ i ].sounds.join ) end
+		if not (advjl.groups [ i ].sounds.leave == "") then resource.AddFile ( "sound/advjl/" .. advjl.groups [ i ].sounds.leave ) end
 
 	end
 
@@ -50,15 +50,27 @@ local function advjl_IsPlayerInGroup ( ply, group )
 	return (advjl_GetPlayerGroup(ply)==group) and true or false
 end
 
+local function advjl_IsPlayerInAnyGroup ( ply, groups )
+	local groupname = advjl_GetPlayerGroup(ply):lower()
+
+	for i=1,#groups do
+		if groupname == groups[i]:lower() then
+			  return true
+		end
+	end
+
+	return false
+end
+
 
 local function advjl_ShowJoinMessage ( ply, arrid, geo_data )
 
 	if not ply:IsValid() then return end
 
-	if advjl_groups [ arrid ].playsound == "" and advjl_groups [ arrid ].messageformat == "" then return end -- we don't want anything from you :( !
+	if advjl.groups [ arrid ].sounds.join == "" and advjl.groups [ arrid ].messages.join == "" then return end -- we don't want anything from you :( !
 
 	local plyNick = ply:Nick()
-	local joinMSG = advjl_groups [ arrid ].messageformat
+	local joinMSG = advjl.groups [ arrid ].messages.join
 
 	if geo_data == nil then
 		geo_data = { -- Provide some data, even if it's failed (good for local loopback)
@@ -93,11 +105,17 @@ local function advjl_ShowJoinMessage ( ply, arrid, geo_data )
 
 	local infoTable = {
 		msg = joinMSG,
-		playsound = advjl_groups [ arrid ].playsound
+		playsound = advjl.groups [ arrid ].sounds.join
 	}
 
     for _, pl in pairs( player.GetAll ( ) ) do
-    	if not advjl_sendtoownplayer and pl == ply then continue end -- skip own player if required.
+    	if advjl.SkipOwnPlayer and pl == ply then continue end -- skip own player if required.
+
+    	if advjl.groups [ arrid ].receivers ~= nil then
+    		if not advjl_IsPlayerInAnyGroup(pl, advjl.groups [ arrid ].receivers) then
+    			continue
+    		end
+    	end
 
     	net.Start ( netMsgStr )
     		net.WriteTable ( infoTable )
@@ -111,21 +129,22 @@ local function advjl_ShowDisconnectMessage ( ply, arrid )
 		return
 	end
 
-	if advjl_groups [ arrid ].leftsound == "" and advjl_groups [ arrid ].messageformatdc == "" then return end -- we don't want anything from you :( !
+	if advjl.groups [ arrid ].sounds.leave == "" and advjl.groups [ arrid ].messages.leave == "" then return end -- we don't want anything from you :( !
 
 	local plyNick = ply:Nick()
-	local leftMsg = advjl_groups [ arrid ].messageformatdc
+	local leftMsg = advjl.groups [ arrid ].messages.leave
 
 
-
-	for k,v in pairs(ply.geo_dat_cached) do
-		local match = "!"..k.."!"
-		leftMsg = string.gsub( leftMsg, match, tostring(v), 1 ) 
+	if ply.geo_dat_cached then
+		for k,v in pairs(ply.geo_dat_cached) do
+			local match = "!"..k.."!"
+			leftMsg = string.gsub( leftMsg, match, tostring(v), 1 ) 
+		end
 	end
 
 	local infoTable = {
 		msg = leftMsg,
-		playsound = advjl_groups [ arrid ].leftsound
+		playsound = advjl.groups [ arrid ].sounds.leave
 	}
 
     for _, pl in pairs( player.GetAll ( ) ) do
@@ -144,7 +163,7 @@ local function advjl_ProcessCountry ( ply, arrid )
 	local plyIP = string.Explode( ":", plyAddr )[ 1 ] -- give us finally his damn ip.
 
 	-- ip-api, is extremely reliable im using it since i can think about it.
-	http.Fetch( "http://ip-api.com/json/"..plyIP , 
+	http.Fetch( advjl.API..plyIP , 
 		function ( data )
 			-- Request was successful
 			if string.len ( data ) > 5 then
@@ -171,15 +190,14 @@ local function advjl_PreHandleJoinLeftMessage ( ply, joinleave )
 	if not ply:IsValid() or ply:IsBot() then return end -- he left us or he's a bot :'(
 
 	-- We could do this abit more elegant, dont we?
-	for i=1,#advjl_groups do
-		if advjl_groups [ i ].groupname == "" then
+	for i=1,#advjl.groups do
+		if advjl.groups [ i ].groupnames == nil then
 			iDefaultID = i
 			continue -- skip default only custom group handling here
 		end
 
-		if advjl_IsPlayerInGroup ( ply, advjl_groups [ i ].groupname ) then
-			
-			if advjl_groups [ i ].resolvecountry then -- maaaan, need to get country first :(
+		if advjl_IsPlayerInAnyGroup ( ply, advjl.groups [ i ].groupnames ) then
+			if advjl.groups [ i ].resolvecountry then -- maaaan, need to get country first :(
 				if joinleave then
 					advjl_ProcessCountry ( ply, i, nil )
 				else
@@ -199,7 +217,7 @@ local function advjl_PreHandleJoinLeftMessage ( ply, joinleave )
 	end
 
 	-- Fallback to the Default
-	if advjl_groups [ iDefaultID ].resolvecountry then -- maaaan, need to get country first :(
+	if advjl.groups [ iDefaultID ].resolvecountry then -- maaaan, need to get country first :(
 		if joinleave then
 			advjl_ProcessCountry ( ply, iDefaultID, nil )
 		else
@@ -219,7 +237,7 @@ end
 
 -- Hooks
 local function advjl_PlayerJoin ( ply )
-	timer.Simple( advjl_msgdelay, function() advjl_PreHandleJoinLeftMessage ( ply, true ) end )
+	timer.Simple( advjl.MsgDelay, function() advjl_PreHandleJoinLeftMessage ( ply, true ) end )
 end
 hook.Add( "PlayerInitialSpawn", "advjl_PlayerJoin", advjl_PlayerJoin )
 
