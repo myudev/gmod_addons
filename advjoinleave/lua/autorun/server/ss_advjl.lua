@@ -213,9 +213,9 @@ local function advjl_PreHandleJoinLeftMessage ( ply, joinleave )
 		end
 
 		if advjl_IsPlayerInAnyGroup ( ply, advjl.groups [ i ].groupnames ) then
-			if advjl.groups [ i ].resolvecountry then -- maaaan, need to get country first :(
+			if advjl.groups [ i ].resolvegeodata then -- maaaan, need to get country first :(
 				if joinleave then
-					advjl_ProcessCountry ( ply, i, nil )
+					advjl_ProcessCountry ( ply, i )
 				else
 					advjl_ShowDisconnectMessage ( ply, i )
 				end
@@ -233,9 +233,9 @@ local function advjl_PreHandleJoinLeftMessage ( ply, joinleave )
 	end
 
 	-- Fallback to the Default
-	if advjl.groups [ iDefaultID ].resolvecountry then -- maaaan, need to get country first :(
+	if advjl.groups [ iDefaultID ].resolvegeodata then -- maaaan, need to get country first :(
 		if joinleave then
-			advjl_ProcessCountry ( ply, iDefaultID, nil )
+			advjl_ProcessCountry ( ply, iDefaultID )
 		else
 			advjl_ShowDisconnectMessage ( ply, iDefaultID )
 		end
